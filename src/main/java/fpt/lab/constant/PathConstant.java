@@ -10,5 +10,7 @@ public class PathConstant {
 	//JSP PATH
 	public static final String JSP_MY_BLOG_PATH = "/page/my-blog.jsp";
 	public static final String JSP_ABOUT_ME_PATH = "/page/about-me.jsp";
+	public static final String JSP_MY_BLOG_DETAIL_PATH = "/page/blog-detail.jsp";
+	public static final String JSP_MY_BLOG_OVERVIEW_PATH = "/page/blog-overview.jsp";;
 
 }

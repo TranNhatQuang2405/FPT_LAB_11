@@ -14,7 +14,9 @@ import javax.servlet.http.HttpSession;
 
 import fpt.lab.constant.ParamConstant;
 import fpt.lab.constant.PathConstant;
+import fpt.lab.model.dto.BlogDto;
 import fpt.lab.model.dto.PageContent;
+import fpt.lab.model.dto.UserDto;
 import fpt.lab.model.req.AccessReq;
 import fpt.lab.service.CommonService;
 import fpt.lab.service.MyBlogService;
@@ -27,8 +29,32 @@ public class MyBlogController extends HttpServlet {
 			throws ServletException, IOException {
 		doInit(request);
 		doAccess(request);
-		request.getRequestDispatcher(PathConstant.JSP_MY_BLOG_PATH).forward(request, response);
+		String jspUrl = doGetData(request, response);
+		request.getRequestDispatcher(jspUrl).forward(request, response);
 
+	}
+
+	private String doGetData(HttpServletRequest request, HttpServletResponse response)  {
+		MyBlogService myBlogService = new MyBlogService();
+		HttpSession session = request.getSession();
+		UserDto userDto = (UserDto) session.getAttribute("user");
+		if(userDto != null) {
+			String blogId = request.getParameter(ParamConstant.MY_BLOG_PARAM_BLOG_ID);
+			String overview = request.getParameter(ParamConstant.MY_BLOG_PARAM_OVERVIEW);
+			if(blogId != null && !blogId.isBlank()) {
+				BlogDto blogDto = myBlogService.getBlogDetail(userDto.getUserId(), blogId);
+				request.setAttribute(ParamConstant.MY_BLOG_PARAM_BLOG, blogDto);
+				return PathConstant.JSP_MY_BLOG_DETAIL_PATH;
+			}else if(overview != null && overview.equals("true")) {
+				return PathConstant.JSP_MY_BLOG_OVERVIEW_PATH;
+			}else {
+				List<BlogDto> blogDtos = myBlogService.getListBlog(userDto.getUserId());
+				request.setAttribute(ParamConstant.MY_BLOG_PARAM_BLOGS, blogDtos);
+				return PathConstant.JSP_MY_BLOG_PATH;
+			}
+		}else {
+			return PathConstant.JSP_MY_BLOG_PATH;
+		}
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)

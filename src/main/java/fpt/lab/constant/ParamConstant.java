@@ -15,6 +15,10 @@ public class ParamConstant {
 	public static final String PARAM_VISTOR_COUNT = "vistorCount";
 	public static final String PARAM_USER = "user";
 	
-	
-	
+	//MyBlog Controller
+	public static final String MY_BLOG_PARAM_BLOG_ID = "blogId";
+	public static final String MY_BLOG_PARAM_OVERVIEW = "overview";
+	public static final String MY_BLOG_PARAM_BLOGS = "blogs";	
+	public static final String MY_BLOG_PARAM_BLOG = "blog";
+
 }

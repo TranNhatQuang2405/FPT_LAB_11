@@ -19,13 +19,10 @@
                 <div class="row-fluid content-inner">
                     <div id="left" class="span9"> <!-- ADD "span12" if no sidebar, or "span9" with sidebar -->
                         <div class="wrapper blog">
-                            <div class="heading">
-                                <h1 class="page-title">${data.getValue("MY_BLOG_BODY.TITLE")}</h1>
-                            </div>
-
                             <div class="content">
-                            	<c:forEach items="${blogs}" var="blog">
-	                            	 <div class="section">
+                            	
+                            	<div class="section">
+                            		<c:if test="${blog != null}">
 	                                    <div class="content">
 	                                        <div class="avatar">
 	                                            <i class="${blog.iconClass}"
@@ -66,8 +63,8 @@
 	                                            </div>
 	                                        </div>
 	                                    </div>
-	                                </div>
-                            	</c:forEach>
+                                    </c:if>
+                                </div>
                                 <ul class="pager">
                                     <li>
                                     	<a rel="nofollow" href="<c:url value='${data.getValue("MY_BLOG_BODY.OVERVIEW_LINK")}'/>">
