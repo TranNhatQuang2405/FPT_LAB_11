@@ -20,5 +20,6 @@ public class ParamConstant {
 	public static final String MY_BLOG_PARAM_OVERVIEW = "overview";
 	public static final String MY_BLOG_PARAM_BLOGS = "blogs";	
 	public static final String MY_BLOG_PARAM_BLOG = "blog";
+	public static final String MY_BLOG_PARAM_LIST_OVERVIEW = "overviews";
 
 }

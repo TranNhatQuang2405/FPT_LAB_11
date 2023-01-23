@@ -15,6 +15,7 @@ import javax.servlet.http.HttpSession;
 import fpt.lab.constant.ParamConstant;
 import fpt.lab.constant.PathConstant;
 import fpt.lab.model.dto.BlogDto;
+import fpt.lab.model.dto.BlogOverviewDto;
 import fpt.lab.model.dto.PageContent;
 import fpt.lab.model.dto.UserDto;
 import fpt.lab.model.req.AccessReq;
@@ -27,8 +28,8 @@ public class MyBlogController extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		doInit(request);
 		doAccess(request);
+		doInit(request);
 		String jspUrl = doGetData(request, response);
 		request.getRequestDispatcher(jspUrl).forward(request, response);
 
@@ -46,6 +47,8 @@ public class MyBlogController extends HttpServlet {
 				request.setAttribute(ParamConstant.MY_BLOG_PARAM_BLOG, blogDto);
 				return PathConstant.JSP_MY_BLOG_DETAIL_PATH;
 			}else if(overview != null && overview.equals("true")) {
+				List<BlogOverviewDto> blogOverviewDtos = myBlogService.getListBlogOverview(userDto.getUserId());
+				request.setAttribute(ParamConstant.MY_BLOG_PARAM_LIST_OVERVIEW, blogOverviewDtos);
 				return PathConstant.JSP_MY_BLOG_OVERVIEW_PATH;
 			}else {
 				List<BlogDto> blogDtos = myBlogService.getListBlog(userDto.getUserId());
@@ -75,11 +78,11 @@ public class MyBlogController extends HttpServlet {
 	private void doAccess(HttpServletRequest request) throws UnknownHostException {
 		HttpSession session = request.getSession();
 		String sessionId = session.getId();
-		String userAgent = request.getHeader("User-Agent");
-		String ip = request.getHeader("X-FORWARDED-FOR");
+		String userAgent = request.getHeader(ParamConstant.HEADER_USER_AGENT);
+		String ip = request.getHeader(ParamConstant.HEADER_IP);
 		String serverName = request.getServerName();
-		if (ip == null || "".equals(ip)) {
-			if(serverName.equals("localhost")) {
+		if (ip == null || ip.isBlank()) {
+			if(serverName.equals(ParamConstant.HEADER_LOCAL_DOMAIN)) {
 				InetAddress address = InetAddress.getLocalHost();
 				ip = address.getHostAddress();
 			}else {

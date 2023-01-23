@@ -5,6 +5,7 @@ import java.util.List;
 import fpt.lab.constant.PathConstant;
 import fpt.lab.dao.BlogDao;
 import fpt.lab.model.dto.BlogDto;
+import fpt.lab.model.dto.BlogOverviewDto;
 
 public class MyBlogService extends BaseService {
 
@@ -21,5 +22,10 @@ public class MyBlogService extends BaseService {
 	public BlogDto getBlogDetail(String userId, String blogId) {
 		BlogDao blogDao = new BlogDao();
 		return blogDao.selectBlogDetail(userId, blogId);
+	}
+	
+	public List<BlogOverviewDto> getListBlogOverview(String userId) {
+		BlogDao blogDao = new BlogDao();
+		return blogDao.selectBlogOverview(userId);
 	}
 }

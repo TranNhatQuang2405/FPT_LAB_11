@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page import="fpt.lab.model.dto.BlogType" %>
 
 <!DOCTYPE html>
 <html>
@@ -37,13 +38,34 @@
 	                                            </div>
 	                                            <div class="heading">
 	                                                <h4>
-	                                                	<a rel="nofollow" href="<c:url value='${"/MyBlog?blogId="}${blog.blogId}'/>">${blog.blogName}</a>
+	                                                	<a rel="nofollow" href="<c:url value='${data.getValue("MY_BLOG_BODY.VIEW_DETAIL_LINK")}${blog.blogId}'/>">${blog.blogName}</a>
 	                                                </h4>
 	                                            </div>
-	
 	                                            <div class="content">
-	                                            	<c:if test="${blog.imageUrl != null && blog.blogContent != null}">
-		                                            	<div class="img-simple span6 pull-left">
+	                                            	<c:if test="${blog.blogType == BlogType.GENERAL}">
+	                                            		<div class="img-simple span6 pull-left">
+		                                                    <div class="image">
+		                                                        <a rel="nofollow" data-ss="imagemodal">
+		                                                        	<img src="<c:url value='${blog.imageUrl}'/>">
+		                                                        </a>
+		                                                    </div>
+		                                                </div>
+		                                                <c:forEach items="${blog.getArrayValue('DATA')}" var="para">
+		                                                	<p>${para.get("PARAGRAPH")}</p>
+		                                                </c:forEach>
+	                                            	</c:if>
+	                                            	<c:if test="${blog.blogType == BlogType.QUOTES}">
+		                                            	<blockquote class="pull-right">
+													    	<p>${blog.getValue('DATA.PARAGRAPH')}</p>
+													        <small>
+														        <cite title="${blog.getValue('DATA.AUTHOR')}">
+														        	${blog.getValue('DATA.AUTHOR')}
+														        </cite>
+													        </small>
+													    </blockquote>
+	                                            	</c:if>
+	                                            	<c:if test="${blog.blogType == BlogType.PICTURE}">
+		                                            	<div class="img-simple  ">
 		                                                    <div class="image">
 		                                                        <a rel="nofollow" data-ss="imagemodal">
 		                                                        	<img src="<c:url value='${blog.imageUrl}'/>">
@@ -51,18 +73,6 @@
 		                                                    </div>
 		                                                </div>
 	                                            	</c:if>
-	                                            	<c:if test="${blog.imageUrl != null && blog.blogContent == null}">
-		                                            	<div class="img-simple  ">
-			                                            	<div class="image">
-		                                                        <a rel="nofollow" data-ss="imagemodal">
-		                                                        	<img src="<c:url value='${blog.imageUrl}'/>">
-		                                                        </a>
-		                                                    </div>
-	                                                    </div>
-	                                            	</c:if>
-													<c:if test="${blog.blogContent != null}">
-														${blog.blogContent}
-													</c:if>
 	                                            </div>
 	                                        </div>
 	                                    </div>

@@ -9,6 +9,7 @@ import java.util.List;
 import fpt.lab.config.DatabaseLoader;
 import fpt.lab.constant.NumberResultConstant;
 import fpt.lab.model.dto.BlogDto;
+import fpt.lab.model.dto.BlogOverviewDto;
 import fpt.lab.service.LoadFileService;
 
 public class BlogDao {
@@ -29,6 +30,7 @@ public class BlogDao {
 				blogDto.setImageUrl(rs.getString("IMAGE_URL"));
 				blogDto.setIconClass(rs.getString("ICON_CLASS"));
 				blogDto.setPublishedDate(rs.getString("PUBLISHED_DATE"));
+				blogDto.setBlogType(rs.getString("BLOG_TYPE_NAME"));
 				result.add(blogDto);
 			}
 			connection.close();
@@ -55,6 +57,7 @@ public class BlogDao {
 				blogDto.setImageUrl(rs.getString("IMAGE_URL"));
 				blogDto.setIconClass(rs.getString("ICON_CLASS"));
 				blogDto.setPublishedDate(rs.getString("PUBLISHED_DATE"));
+				blogDto.setBlogType(rs.getString("BLOG_TYPE_NAME"));
 				break;
 			}
 			connection.close();
@@ -62,6 +65,27 @@ public class BlogDao {
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			return null;
+		}
+	}
+	
+	public List<BlogOverviewDto> selectBlogOverview(String userId) {
+		List<BlogOverviewDto> result = new ArrayList<BlogOverviewDto>();
+		try {
+			Connection connection = DatabaseLoader.getConnection();
+			String sql = LoadFileService.getSqlContent("select_blog_overview.sql");
+			PreparedStatement preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setString(1, userId);
+			ResultSet rs = preparedStatement.executeQuery();
+			while (rs.next()) {
+				BlogOverviewDto blogOverviewDto = new BlogOverviewDto();
+				blogOverviewDto.setMonth(rs.getString("MONTH_YEAR"));
+				blogOverviewDto.setData(rs.getString("DATA"));
+				result.add(blogOverviewDto);
+			}
+			connection.close();
+			return result;
+		} catch (Exception e) {
+			return result;
 		}
 	}
 }
